@@ -1,0 +1,18 @@
+// Forward all emails from a domain to a receiver
+
+function forwardFilterFrom() {
+  var filterEmail = 'from@domain.com';
+  var forwardEmail = 'to@gomain.com';
+  var threads = GmailApp.getInboxThreads();
+  var label = GmailApp.getUserLabelByName('Procurify');
+  
+  for (var i=0; i < threads.length; i++) {
+    var message = threads[i].getMessages()[0];
+    var who = message.getFrom();
+    if (who.indexOf(filterEmail)!=-1 && message.isUnread()) {
+        message.forward(forwardEmail);
+        message.markRead();
+        threads[i].addLabel(label);
+     }
+  }
+}
