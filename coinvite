@@ -1,0 +1,34 @@
+// For a given time window, Google Calendar will invite add "myEmail" to the event guest list if "myEmail" is not already invited
+
+function coinvite() {
+  var myEmail = "name@domain.com"; //Email to invite to the event (CUSTOMIZE THIS VALUE)
+  var now = new Date();
+  var eventCounter = 0;
+  var daysToMilliseconds = 24 * 60 * 60 * 1000;
+  
+  // Start Date
+  var numberOfDaysBeforeNow = 1;
+  var eventStartDate = new Date(now.getTime() - (numberOfDaysBeforeNow * daysToMilliseconds));
+  
+  // End Date
+  var numberOfDaysAfterNow = 1;
+  var eventEndDate = new Date(now.getTime() + (numberOfDaysBeforeNow * daysToMilliseconds));
+  
+  // Get Events    
+  var events = CalendarApp.getDefaultCalendar().getEvents(eventStartDate, eventEndDate);
+  
+  // If myEmail is not invited, then invite
+  for (var eventIndex in events) {
+    var workGuest = events[eventIndex].getGuestByEmail(myEmail);
+    if (workGuest == null) {
+      events[eventIndex].addGuest(myEmail);
+      eventCounter += 1;
+    }
+    
+    // To prevent Google from blocking invites, add 3sec delay after every 30 events
+    if (eventCounter % 30 == 0) { 
+      Utilities.sleep(3000);
+      eventCounter = 0;
+    }
+  }
+}
