@@ -2,9 +2,9 @@
 
 function forwardFilterFrom() {
   var filterEmail = 'from@domain.com';
-  var forwardEmail = 'to@gomain.com';
+  var forwardEmail = 'to@domain.com';
   var threads = GmailApp.getInboxThreads();
-  var label = GmailApp.getUserLabelByName('Procurify');
+  var label = GmailApp.getUserLabelByName('Label to tag');
   
   for (var i=0; i < threads.length; i++) {
     var message = threads[i].getMessages()[0];
